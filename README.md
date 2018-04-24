@@ -1,5 +1,5 @@
 # Random Access Network
-[![Build Status](https://travis-ci.org/soyuka/random-access-network.svg?branch=master)](https://travis-ci.org/soyuka/random-access-network)
+[![Build Status](https://travis-ci.org/random-access-storage/random-access-network.svg?branch=master)](https://travis-ci.org/random-access-storage/random-access-network)
 
 A [Random Access Storage](https://github.com/random-access-storage) implementation that goes through a Transport.
 
