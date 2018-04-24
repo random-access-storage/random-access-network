@@ -4,24 +4,20 @@
 const NoopTransport = require('random-access-network/transport')
 const RAN = require('random-access-network')
 
-class WssTransport extends NoopTransport {
-  constructor(name, socket) {
-    super(name)
-    this._sock = socket
-    this._sock.on('message', (response) => this.onmessage(response))
-  }
+function WssTransport (name, socket) {
+  NoopTransport.call(this, name)
+  this._sock = socket
+  this._sock.on('message', (response) => this._next(response))
+}
 
-  send(data) {
-    this._sock.send(data)
-  }
+WssTransport.prototype = Object.create(NoopTransport.prototype)
 
-  onmessage(data) {
-    this._next(data)
-  }
+WssTransport.prototype.send = function (data) {
+  this._sock.send(data)
+}
 
-  close() {
-    this._sock.close()
-  }
+WssTransport.prototype.close = function () {
+  this._sock.close()
 }
 
 const sock = new WebSocket('ws://localhost:8080')

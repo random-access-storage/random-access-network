@@ -1,23 +1,23 @@
 const NoopTransport = require('../../transport')
 
-class NativeTransport extends NoopTransport {
-  constructor(name, port) {
-    super(name)
-    this._port = port
-    this._port.onMessage.addListener((response) => this.onmessage(response))
-  }
+function NativeTransport (name, port) {
+  NoopTransport.call(this, name)
+  this._port = port
+  this._port.onMessage.addListener((response) => this.onmessage(response))
+}
 
-  send(data) {
-    this._port.postMessage(data)
-  }
+NativeTransport.prototype = Object.create(NoopTransport.prototype)
 
-  onmessage(data) {
-    this._next(Buffer.from(data.data))
-  }
+NativeTransport.prototype.send = function (data) {
+  this._port.postMessage(data)
+}
 
-  close() {
-    this._port.disconnect()
-  }
+NativeTransport.prototype.onmessage = function (data) {
+  this._next(Buffer.from(data.data))
+}
+
+NativeTransport.prototype.close = function () {
+  this._port.disconnect()
 }
 
 module.exports = NativeTransport

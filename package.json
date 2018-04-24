@@ -17,7 +17,9 @@
     "test": "node test.js",
     "build": "protocol-buffers message.proto -o proto.js"
   },
-  "keywords": ["random-access-storage"],
+  "keywords": [
+    "random-access-storage"
+  ],
   "author": "soyuka",
   "license": "MIT"
 }

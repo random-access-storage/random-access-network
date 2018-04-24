@@ -1,19 +1,19 @@
 const NoopTransport = require('../../transport')
 
-class WssTransport extends NoopTransport {
-  constructor(name, socket) {
-    super(name)
-    this._sock = socket
-    this._sock.on('message', (response) => this._next(response))
-  }
+function WssTransport (name, socket) {
+  NoopTransport.call(this, name)
+  this._sock = socket
+  this._sock.on('message', (response) => this._next(response))
+}
 
-  send(data) {
-    this._sock.send(data)
-  }
+WssTransport.prototype = Object.create(NoopTransport.prototype)
 
-  close() {
-    this._sock.close()
-  }
+WssTransport.prototype.send = function (data) {
+  this._sock.send(data)
+}
+
+WssTransport.prototype.close = function () {
+  this._sock.close()
 }
 
 module.exports = WssTransport

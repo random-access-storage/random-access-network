@@ -67,36 +67,37 @@ wss.on('connection', function connection(ws) {
 
 ### Transport
 
-A transport is a class that sends/receive data to/from an interface (network, IPC etc.).
+A transport is a class that sends/receive data to/from an interface (network, IPC etc.) and handles encoding/decoding.
+
+The `NoopTransport` handles the correct propagation of request/callbacks. When creating your own transport you should implement the methods `send`, `onmessage` and optionally `close`:
+- `send` gets a buffer to be send to the network of your choice
+- `onmessage` should call `this._next(buffer)` once you've transformed the received data in a buffer
+- `close` if you want to close the network interface
+
+For example a websocket transport:
 
 ```javascript
 const NoopTransport = require('random-access-network/transport')
 
-class MyTransport extends NoopTransport {
-  constructor(name, interface) {
-    super(name)
-    this._interface = interface
-    this._interface.on('message', (response) => this.onmessage(response))
-  }
-
-  /**
-   * Send data to the interface
-   */
-  send(data) {
-    this._interface.send(data)
-  }
-
-  /**
-   * Receive data from the interface
-   */
-  onmessage(data) {
-    this._next(data)
-  }
-
-  close() {
-    this._interface.close()
-  }
+function WssTransport (name, socket) {
+  NoopTransport.call(this, name)
+  this._sock = socket
+  this._sock.on('message', (response) => this.onmessage(response))
 }
 
-module.exports = MyTransport
+WssTransport.prototype = Object.create(NoopTransport.prototype)
+
+WssTransport.prototype.send = function (data) {
+  this._sock.send(data)
+}
+
+WssTransport.prototype.onmessage = function (data) {
+  this._next(data)
+}
+
+WssTransport.prototype.close = function () {
+  this._sock.close()
+}
 ```
+
+See also the [native messaging implementation](./example/native).
