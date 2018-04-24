@@ -5,7 +5,7 @@ A [Random Access Storage](https://github.com/random-access-storage) implementati
 
 ## Installation
 
-```
+```code
 npm install random-access-network --save
 ```
 
@@ -13,7 +13,7 @@ npm install random-access-network --save
 
 For example through WebSocket:
 
-```
+```javascript
 const WebSocket = require('ws')
 const RAN = require('random-acces-network')
 // see below
