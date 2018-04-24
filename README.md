@@ -11,7 +11,15 @@ npm install random-access-network --save
 
 ## Usage
 
-For example through WebSocket:
+```javascript
+const {RAN, StreamTransport} = require('random-access-network')
+const stream = connectSomehwereAndGetDuplexStream("test")
+const storage = RAN("test", new StreamTransport("test", stream))
+
+storage.read(4, 20, function(err, buffer) {})
+```
+
+Advanced example with a WebSocket transport:
 
 ```javascript
 const WebSocket = require('ws')
@@ -36,12 +44,14 @@ sock.on('open', function() {
 })
 ```
 
-### Bridge
+### Random access network bridge
 
 `random-access-network` provides a bridge utility to transform a request to a `random-access-storage` call:
 
 ```javascript
-const rasb = require('random-access-network/bridge')(function getRas(name) {
+const raf = require('random-access-file')
+const {RasBridge} = require('random-access-network')
+const ras = RasBridge(function getRas(name) {
   return raf(name)
 })
 ```
@@ -51,8 +61,9 @@ Usage example in the websocket case:
 ```javascript
 const WebSocket = require('ws')
 const raf = require('random-access-file')
-const ras = require('random-access-network/bridge')((name) => raf(name))
+const {RasBridge} = require('random-access-network')
 
+const ras = RasBridge((name) => raf(name))
 const wss = new WebSocket.Server({ port: 8080 })
 
 wss.on('connection', function connection(ws) {
@@ -77,7 +88,7 @@ The `NoopTransport` handles the correct propagation of request/callbacks. When c
 For example a websocket transport:
 
 ```javascript
-const NoopTransport = require('random-access-network/transport')
+const {NoopTransport} = require('random-access-network')
 
 function WssTransport (name, socket) {
   NoopTransport.call(this, name)
@@ -98,6 +109,12 @@ WssTransport.prototype.onmessage = function (data) {
 WssTransport.prototype.close = function () {
   this._sock.close()
 }
+```
+
+If you're using a duplex stream you can use the provided StreamTransport:
+
+```javascript
+const {StreamTransport} = require('random-access-network')
 ```
 
 See also the [native messaging implementation](./example/native).
