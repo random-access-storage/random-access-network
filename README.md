@@ -38,7 +38,7 @@ sock.on('open', function() {
 
 ### Bridge
 
-`random-access-network provides` a bridge utility to transform a request to a `random-access-storage` call:
+`random-access-network` provides a bridge utility to transform a request to a `random-access-storage` call:
 
 ```javascript
 const rasb = require('random-access-network/bridge')(function getRas(name) {
