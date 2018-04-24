@@ -12,7 +12,7 @@ const postMessage = new PassThrough()
 const decode = require('browser.runtime/decoder')()
 const encode = require('browser.runtime/encoder')()
 const raf = require('random-access-file')
-const ras = require('../../rasb')((name) => raf(name))
+const ras = require('../../bridge')((name) => raf(name))
 
 pump(process.stdin, decode, onmessage, function (err) {})
 pump(postMessage, encode, process.stdout, function (err) {})

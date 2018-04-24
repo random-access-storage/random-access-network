@@ -1,21 +1,22 @@
 {
   "name": "random-access-network",
   "version": "1.0.0",
-  "description": "",
+  "description": "A random-access-storage that goes through a Transport",
   "main": "index.js",
   "dependencies": {
     "random-access-storage": "^1.1.1"
   },
   "devDependencies": {
-    "random-access-file": "^2.0.1",
-    "protocol-buffers": "^4.0.4",
     "browser.runtime": "^1.0.2",
-    "tape": "^4.9.0"
+    "protocol-buffers": "^4.0.4",
+    "random-access-file": "^2.0.1",
+    "tape": "^4.9.0",
+    "ws": "^5.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["random-access-storage"],
+  "author": "soyuka",
+  "license": "MIT"
 }
