@@ -27,32 +27,36 @@ function RasBridge (getRas) {
   }
 }
 
-function propagate(data, ras) {
-  switch (data.action) {
+function propagate (request, ras) {
+  switch (request.action) {
     case Action.OPEN:
-      ras._open(data)
+      ras.open(request.callback)
       return
     case Action.OPENREADONLY:
-      ras._openReadonly(data)
+      if (typeof ras._openReadonly !== 'undefined') {
+        ras._openReadonly(request)
+        return
+      }
+
+      ras.open(request.callback)
       return
     case Action.READ:
-      ras._read(data)
+      ras.read(request.offset, request.size, request.callback)
       return
     case Action.WRITE:
-      ras._write(data)
+      ras.write(request.offset, request.data, request.callback)
       return
     case Action.DEL:
-      ras._del(data)
+      ras.del(request.offset, request.size, request.callback)
       return
     case Action.STAT:
-      ras._stat(data)
+      ras.stat(request.callback)
       return
     case Action.CLOSE:
-      ras._close(data)
+      ras.close(request.callback)
       return
     case Action.DESTROY:
-      ras._destroy(data)
-      return
+      ras.destroy(request.callback)
   }
 }
 
