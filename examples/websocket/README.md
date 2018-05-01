@@ -1,8 +1,7 @@
 ## Websocket raf
 
 ```javascript
-const NoopTransport = require('random-access-network/transport')
-const RAN = require('random-access-network')
+const {NoopTransport, RAN} = require('random-access-network')
 
 function WssTransport (name, socket) {
   NoopTransport.call(this, name)
@@ -42,7 +41,9 @@ The websocket server (bridges `random-access-file`):
 ```javascript
 const WebSocket = require('ws')
 const raf = require('random-access-file')
-const ras = require('random-access-network/rasb')((name) => raf(name))
+// Bridge
+const {RasBridge} = require('random-access-network')
+const ras = RasBridge((name) => raf(name))
 
 const wss = new WebSocket.Server({ port: 8080 })
 

@@ -5,7 +5,7 @@ An example that works through the WebExtensions Native Messaging API.
 Here'd be the browser code:
 
 ```javascript
-const NoopTransport = require('../../transport')
+const {NoopTransport, RAN} = require('random-access-network')
 
 function NativeTransport (name, port) {
   NoopTransport.call(this, name)
@@ -27,7 +27,6 @@ NativeTransport.prototype.close = function () {
   this._port.disconnect()
 }
 
-const RAN = require('random-access-network')
 const port = runtime.connectNative('native-server')
 const transport = new NativeTransport('test', port)
 const ran = RAN('test', transport)
@@ -48,7 +47,8 @@ const encoder = require('browser.runtime/encoder')
 const raf = require('random-access-file')
 
 // Bridge
-const ras = require('random-access-network/rasb')((name) => raf(name))
+const {RasBridge} = require('random-access-network')
+const ras = RasBridge((name) => raf(name))
 
 const onmessage = new PassThrough()
 const postMessage = new PassThrough()
