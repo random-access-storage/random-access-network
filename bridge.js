@@ -33,11 +33,6 @@ function propagate (request, ras) {
       ras.open(request.callback)
       return
     case Action.OPENREADONLY:
-      if (typeof ras._openReadonly !== 'undefined') {
-        ras._openReadonly(request)
-        return
-      }
-
       ras.open(request.callback)
       return
     case Action.READ:
